@@ -1,0 +1,48 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-tooltip"></script>
+
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body class="root">
+  <div class="text-container">
+    <h1>Machine learning-based evidence and
+attribution mapping of 100,000 climate
+impact studies</h2>
+    <h4> This study combines multiple lines of evidence to produce a map of the
+      evidence on the observed impacts of climate change</h4>
+    <p> First, we use observational and climate model data to ask where are trends in temperature and precipitation attributable to human
+      influence on the climate (categories +-2/3 below)?
+    <div id="view"></div>
+    <div class="center"><img src="static/dakey.png" width="400px"></div>
+    <p> Next, we use machine learning to identify over 100,000 individual studies of
+      observed climate impacts, and classify the type of impact they document, and the
+      climate variable driving these impacts.
+    <div id="view2"></div>
+    <div class="center"><img src="static/wskey.png" width="400px"></div>
+  </div>
+  <script>
+    async function addVgExample(path, id, options) {
+      const vgSpec = await d3.json(path);
+      const handler = new vegaTooltip.Handler(options);
+      var opt = {
+        tooltip: handler.call
+      }
+      await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
+        view = result.view
+        view.addSignalListener('variable', function(name, value) {
+          console.log('WIDTH: ' + value);
+        });
+      });
+    }
+    addVgExample("map.json", "#view");
+
+    addVgExample("map2.json", "#view2");
+
+
+
+  </script>
+</body>

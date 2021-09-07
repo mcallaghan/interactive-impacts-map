@@ -1,0 +1,105 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A plot of 2016 annual global precipitation data from the NOAA Climate Forecast System (CFS) v2.",
+  "width": 600,
+  "height": 300,
+  "autosize": "fit-x",
+
+  "signals": [
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout",  "update": "{}"}
+      ]
+    },
+    {
+      "name": "variable", "value": "Weighted studies",
+      "bind": {"input": "select", "name": "Variable: ", "options": [
+        "Weighted studies"
+      ]}
+    }
+  ],
+
+  "data": [
+    {
+      "name": "da_data",
+      "url": "data/da_data.json",
+      "format": { "type": "json", "property": "features" }
+    },
+    {
+      "name": "world",
+      "url": "data/world-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    }
+  ],
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "equalEarth",
+      "scale": 110,
+      "rotate": [0,0,0],
+      "translate": {"signal": "[width/2, height/2]"}
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "Weighted studies",
+      "type": "threshold",
+      "domain": [0,0.5,1,2,5,10,20,50,100,200],
+      "range": [
+        "#fcfdbf",
+        "#feca8d",
+        "#fd9668",
+        "#f1605d",
+        "#cd4071",
+        "#9e2f7f",
+        "#721f81",
+        "#440f76",
+        "#180f3d"
+      ]
+    }
+  ],
+
+    "marks": [
+      {
+        "type": "shape",
+        "clip": true,
+        "from": {"data": "world"},
+        "encode": {
+          "update": {
+            "strokeWidth": {"value": 1},
+            "stroke": {"value": "black"}
+          }
+        },
+        "transform": [
+          {
+            "type": "geoshape",
+            "projection": "projection"
+          }
+        ]
+      },
+      {
+        "type": "shape",
+        "from": {"data": "da_data"},
+        "encode": {
+          "enter": {
+            "strokeWidth": {"value": 0.5},
+            "opacity": {"value": 0.5},
+            "tooltip": {"signal": "datum.properties"}
+          },
+          "update": {
+            "fill": {"scale": "Weighted studies", "field": {"signal": "variable"}},
+            "stroke": {"value": "lightgrey"}
+          },
+          "hover": { "stroke": {"value": "red"} }
+        },
+        "transform": [
+          { "type": "geoshape", "projection": "projection" }
+        ]
+      }
+    ]
+}

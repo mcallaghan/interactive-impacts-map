@@ -1,0 +1,51 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A heatmap showing average daily temperatures in Seattle for each hour of the day.",
+  "width": 800,
+  "height": 500,
+  "padding": 5,
+
+  "title": {
+    "text": "Seattle Annual Temperatures",
+    "anchor": "middle",
+    "fontSize": 16,
+    "frame": "group",
+    "offset": 4
+  },
+
+  "data": [
+    {
+      "name": "temperature",
+      "url": "data/da_data.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"LAT": "number", "LON": "number", "precip_da_cat":"number"}}
+    },
+    {
+      "name": "da_data",
+      "url": "data/da_data.json"
+    }
+  ],
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "equalEarth"
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "shape",
+      "from": {"data": "da_data"},
+      "encode": {
+        "strokeWidth": {"value": 2},
+        "opacity": {"value": 0.5},
+        "stroke": {"value": "#4682b4"}
+      },
+      "transform": [
+        { "type": "geoshape", "projection": "projection" }
+      ]
+    }
+  ]
+}

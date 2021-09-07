@@ -1,0 +1,24 @@
+#vg-tooltip-element table {
+  color: red;
+  font-size: 8px !important;
+}
+
+body {
+  margin: 0;
+}
+
+.idyll-root {
+  box-sizing: border-box;
+  padding: 60px 0;
+  margin-bottom: 60px;
+}
+
+.text-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+div.center {
+  display: flex;
+  justify-content: center;
+}

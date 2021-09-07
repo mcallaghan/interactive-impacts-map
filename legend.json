@@ -1,0 +1,27 @@
+{
+
+  "legends": [
+  {
+    "title": "D&A category (Temperature)",
+    "fill": "Temperature",
+    "orient": "bottom",
+    "offset": 15,
+    "type": "symbol",
+    "clipHeight": 2,
+    "columnPadding": 10,
+    "titlePadding": 10,
+    "titleOrient": "left",
+    "titleAnchor": "end",
+    "direction": "horizontal",
+    "values": [-4,-3,-2,-1,0,1,2,3,4],
+    "update": {
+      "fill": {"signal":"variable"}
+    }
+  }
+  ],
+
+
+  "config": {
+    "legend": {"layout": {"anchor": "middle"}}
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A plot of 2016 annual global precipitation data from the NOAA Climate Forecast System (CFS) v2.",
+  "width": 600,
+  "height": 300,
+  "autosize": "fit-x",
+
+  "signals": [
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout",  "update": "{}"}
+      ]
+    },
+    {
+      "name": "variable", "value": "Temperature",
+      "bind": {"input": "select", "name": "Variable: ", "options": [
+        "Temperature", "Precipitation"
+      ]}
+    }
+  ],
+
+  "data": [
+    {
+      "name": "da_data",
+      "url": "data/da_data.json",
+      "format": { "type": "json", "property": "features" }
+    },
+    {
+      "name": "world",
+      "url": "data/world-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    }
+  ],
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "equalEarth",
+      "scale": 110,
+      "rotate": [0,0,0],
+      "translate": {"signal": "[width/2, height/2]"}
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "Temperature",
+      "type": "ordinal",
+      "domain": [-4,-3,-2,-1,0,1,2,3,4,5],
+      "range": ["#40004b",
+         "#2166ac",
+         "#67a9cf",
+         "#d1e5f0",
+         "#f7f7f7",
+         "#fddbc7",
+         "#ef8a62",
+         "#b2182b",
+         "#ffed6f",
+         "#e0e0e0"
+      ]
+    },
+    {
+      "name": "Precipitation",
+      "type": "ordinal",
+      "domain": [-4,-3,-2,-1,0,1,2,3,4,5],
+      "range": [
+        "#ffed6f",
+        "#b2182b",
+        "#ef8a62",
+        "#fddbc7",
+        "#f7f7f7",
+        "#d1e5f0",
+        "#67a9cf",
+        "#2166ac",
+        "#40004b",
+        "#e0e0e0"
+      ]
+    },
+    {
+      "name": "Weighted studies",
+      "type": "threshold",
+      "domain": [0,0.5,1,2,5,10,20,50,100,200],
+      "range": [
+        "#fcfdbf",
+        "#feca8d",
+        "#fd9668",
+        "#f1605d",
+        "#cd4071",
+        "#9e2f7f",
+        "#721f81",
+        "#440f76",
+        "#180f3d"
+      ]
+    }
+  ],
+
+
+  "marks": [
+    {
+      "type": "shape",
+      "clip": true,
+      "from": {"data": "world"},
+      "encode": {
+        "update": {
+          "strokeWidth": {"value": 1},
+          "stroke": {"value": "black"}
+        }
+      },
+      "transform": [
+        {
+          "type": "geoshape",
+          "projection": "projection"
+        }
+      ]
+    },
+    {
+      "type": "shape",
+      "from": {"data": "da_data"},
+      "encode": {
+        "enter": {
+          "strokeWidth": {"value": 0.5},
+          "opacity": {"value": 0.5},
+          "tooltip": {"signal": "datum.properties"}
+        },
+        "update": {
+          "fill": {"scale": {"signal": "variable"}, "field": {"signal": "variable"}},
+          "stroke": {"value": "lightgrey"}
+        },
+        "hover": { "stroke": {"value": "red"} }
+      },
+      "transform": [
+        { "type": "geoshape", "projection": "projection" }
+      ]
+    }
+  ]
+}
