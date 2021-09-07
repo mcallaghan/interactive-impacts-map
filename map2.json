@@ -15,18 +15,36 @@
       ]
     },
     {
-      "name": "variable", "value": "Weighted studies",
-      "bind": {"input": "select", "name": "Variable: ", "options": [
-        "Weighted studies"
+      "name": "driverVar", "value": "all",
+      "bind": {"input": "select", "name": "Driver: ", "options": [
+        "all",
+        "Temperature",
+        "Precipitation"
+      ]}
+    },
+    {
+      "name": "impactVar", "value": "all",
+      "bind": {"input": "select", "name": "Impact: ", "options": [
+        "all",
+        "Coastal and marine Ecosystems",
+        "Human and managed",
+        "Mountains, snow and ice",
+        "Rivers, lakes, and soil moisture",
+        "Terrestrial ES",
+        "Other systems"
       ]}
     }
   ],
 
   "data": [
     {
-      "name": "da_data",
-      "url": "data/da_data.json",
-      "format": { "type": "json", "property": "features" }
+      "name": "ws_data",
+      "url": "data/ws_data.json",
+      "format": { "type": "json", "property": "features" },
+      "transform": [
+        { "type": "filter", "expr": "datum.driver===driverVar"},
+        { "type": "filter", "expr": "datum.impact===impactVar"}
+      ]
     },
     {
       "name": "world",
@@ -84,7 +102,7 @@
       },
       {
         "type": "shape",
-        "from": {"data": "da_data"},
+        "from": {"data": "ws_data"},
         "encode": {
           "enter": {
             "strokeWidth": {"value": 0.5},
@@ -92,7 +110,7 @@
             "tooltip": {"signal": "datum.properties"}
           },
           "update": {
-            "fill": {"scale": "Weighted studies", "field": {"signal": "variable"}},
+            "fill": {"scale": "Weighted studies", "field": "weight"},
             "stroke": {"value": "lightgrey"}
           },
           "hover": { "stroke": {"value": "red"} }

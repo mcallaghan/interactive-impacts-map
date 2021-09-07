@@ -33,9 +33,6 @@ impact studies</h2>
       }
       await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
         view = result.view
-        view.addSignalListener('variable', function(name, value) {
-          console.log('WIDTH: ' + value);
-        });
       });
     }
     addVgExample("map.json", "#view");
