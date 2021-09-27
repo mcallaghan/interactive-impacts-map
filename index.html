@@ -14,15 +14,45 @@ attribution mapping of 100,000 climate
 impact studies</h2>
     <h4> This study combines multiple lines of evidence to produce a map of the
       evidence on the observed impacts of climate change</h4>
-    <p> First, we use observational and climate model data to ask where are trends in temperature and precipitation attributable to human
-      influence on the climate (categories +-2/3 below)?
+
+    <h3>1. A growing body of evidence on climate impacts</h3>
+    <p> We use machine learning to identify over 100,000 individual studies of
+      observed climate impacts, and classify the type of impact they document, and the
+      climate variable driving these impacts. Identifying relevant documents was a difficult classification
+      problem (for humans as well as our machine learning model) so there are large uncertainties around
+      the number of relevant documents, but we know that that this number is big and growing.
+    <div id="fig1"></div>
+    <h3>2. Automatic classification and mapping of evidence</h3>
+    <p> Assessing evidence at this kind of scale manually is unfeasible, but mapping this out is critical to
+      assessments like the the IPCC which try to provide a comprehensive picture of climate research.
+      We use machine learning to predict what type of system climate impacts are occuring in, whether those
+      impacts are being driven by temperature or precipitation, and where the study documents evidence from.
+    <div id="fig1_2"></div>
+    <h3>3. Grid cell level attribution of temperature and precipitation trends</h3>
+    <p> We used updated observational data to generate a picture of where trends in temperature and precipitation since 1951 can be
+      attributed to human influence on the climate.
+      Where trends are significantly different from internal variability, and in line those expected from climate models, we call them
+      detectable and attributable trends (categories +-2/3 below)?
+    <!-- <p class="todo">Switch between observational data, modelling, internal variability and Impact category
+    <p class="todo"> Explain how we make these calculations
+    <p class="todo"> Refine Tooltip -->
     <div id="view"></div>
     <div class="center"><img src="static/dakey.png" width="400px"></div>
-    <p> Next, we use machine learning to identify over 100,000 individual studies of
-      observed climate impacts, and classify the type of impact they document, and the
-      climate variable driving these impacts.
+    <h3>4. Mapping individual studies to grid points</h3>
+    <p> Next we map the studies we identified to the same grid cells by resolving the locations we identified
+      to the set of cells that overlap the location. The example below shows how the the grid cells attribution
+      categories are aggregated for a given geographical location like Sudan (a. and b.), and how
+      the studies that talk about Sudan and the geographical locations within Sudan
+      are mapped to grid cells with a Weighted Studies (WS) score.
+    <div class="center"><img src="static/EF9.jpg" width="600px"></div>
+    <h3>5. Mapping climate impact research by impact type</h3>
+    <p> We can show this for the whole world, and also filter by impact type
     <div id="view2"></div>
     <div class="center"><img src="static/wskey.png" width="400px"></div>
+    <h3> 6. Mapping potentially attributable impacts literature through preliminary two-step attribution</h3>
+    <p> By bringing these lines of research together, we can show the extent to which the impacts
+    of climate change are being felt across systems and across continents</p>
+    <div class="center"><img src="static/figure_2.png" width="400px"></div>
   </div>
   <script>
     async function addVgExample(path, id, options) {
@@ -35,11 +65,12 @@ impact studies</h2>
         view = result.view
       });
     }
+    addVgExample("fig1.json", "#fig1");
+
+    addVgExample("fig1_2.json", "#fig1_2");
+
     addVgExample("map.json", "#view");
 
     addVgExample("map2.json", "#view2");
-
-
-
   </script>
 </body>

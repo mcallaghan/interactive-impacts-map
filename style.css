@@ -22,3 +22,7 @@ div.center {
   display: flex;
   justify-content: center;
 }
+
+p.todo {
+  background-color: yellow;
+}

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A basic bar chart example, with value labels shown upon mouse hover.",
+  "width": 600,
+  "height": 300,
+  "autosize": "fit-x",
+  "padding": 5,
+
+  "signals": [
+    {
+      "name": "indexPY",
+      "update": "2019",
+      "on": [
+        {
+          "events": "mousemove",
+          "update": "round(invert('x', clamp(x(), 0, width)))"
+        }
+      ]
+    },
+    {
+      "name": "tAlign",
+      "update": "'right'",
+      "on": [
+        {
+          "events": "mousemove",
+          "update": "round(invert('x', clamp(x(), 0, width))) > 2005 ? 'right' : 'left'"
+        }
+      ]
+    },
+    {
+      "name": "maxDate",
+      "update": "2019"
+    },
+    {
+      "name": "indexN",
+      "update": "100"
+    }
+  ],
+
+  "data": [
+    {
+      "name": "table",
+      "url": "data/yearly_totals.json"
+    },
+    {
+      "name": "index",
+      "source": "table",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.PY===round(indexPY)"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "range": "width",
+      "zero": false,
+      "domain": {"data": "table", "field": "PY"}
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "range": "height",
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "table", "field": "ub"}
+    }
+  ],
+
+  "axes": [
+    {
+      "orient": "bottom",
+      "scale": "x",
+      "tickCount":5,
+      "tickMinStep": 5,
+      "format": "f"
+    },
+    {"orient": "left", "scale": "y"}
+  ],
+    "marks": [
+      {
+        "type": "line",
+        "from": {"data": "table"},
+        "encode": {
+          "enter": {
+            "x": {"scale": "x", "field": "PY"},
+            "y": {"scale": "y", "field": "mid"},
+            "stroke": {"value": "steelblue"},
+            "strokeWidth": {"value": 1}
+          },
+          "update": {
+            "strokeOpacity": {"value": 1}
+          },
+          "hover": {
+            "strokeOpacity": {"value": 0.5}
+          }
+        }
+      },
+      {
+        "type": "area",
+        "from": {"data": "table"},
+        "encode": {
+          "enter": {
+            "x": {"scale": "x", "field": "PY"},
+            "x2": {"scale": "x", "field": "PY"},
+            "y": {"scale": "y", "field": "ub"},
+            "y2": {"scale": "y", "field": "lb"},
+            "stroke": {"value": "steelblue"},
+            "fill": {"value": "steelblue"},
+            "opacity": {"value": 0.5},
+            "strokeWidth": {"value": 1}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "index"},
+        "encode": {
+          "update": {
+            "x": {"scale": "x", "signal": "indexPY"},
+            "y2": 15000000,
+            "align": {"signal": "tAlign"},
+            "text": {"field": "label"},
+            "fill": {"value": "firebrick"},
+            "radius": {"value": 10}
+          }
+        }
+      },
+      {
+        "type": "rule",
+        "encode": {
+          "update": {
+            "x": {"scale": "x", "signal": "indexPY", "offset": 0.5},
+            "y": {"value": 0},
+            "y2": {"field": {"group": "height"}},
+            "stroke": {"value": "firebrick"}
+          }
+        }
+      }
+    ]
+
+}

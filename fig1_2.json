@@ -1,0 +1,232 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A basic bar chart example, with value labels shown upon mouse hover.",
+  "width": 600,
+  "height": 300,
+  "padding": 5,
+
+  "data": [
+    {
+      "name": "impact_table",
+      "url": "data/impact_totals.json"
+    },
+    {
+      "name": "continent_table",
+      "url": "data/continent_totals.json"
+    }
+  ],
+
+    "signals": [
+      { "name": "chartWidth", "value": 250 },
+      {
+        "name": "tooltip",
+        "value": {},
+        "on": [
+          {"events": "rect:mouseover", "update": "datum"},
+          {"events": "rect:mouseout",  "update": "{}"}
+        ]
+      }
+    ],
+
+    "scales": [
+      {
+        "name": "layout",
+        "type": "band",
+        "domain": ["impact", "continent"],
+        "range": "width"
+      }
+    ],
+
+    "marks": [
+      {
+          "description": "Impact Category",
+          "name": "impact",
+          "type": "group",
+          "encode": {
+            "enter": {
+              "x": {"scale": "layout", "value":"impact","offset":20},
+              "width": {"signal": "chartWidth"},
+              "height": {"signal": "height"},
+              "fill": {"value": "transparent"}
+            }
+          },
+          "scales": [
+            {
+              "name":"yscale",
+              "type": "linear",
+              "domain": {"data": "impact_table","field":"ub"},
+              "range": [{"signal": "height"},0]
+            },
+            {
+              "name": "impact_xscale",
+              "type": "band",
+              "domain": {"data": "impact_table", "field": "name"},
+              "range": [0,{"signal": "chartWidth"}],
+              "padding": 0.5,
+              "round": true
+            }
+          ],
+          "axes": [
+            {
+              "orient": "bottom",
+              "scale": "impact_xscale",
+              "labelAngle": -45,
+              "labelAlign": "right",
+              "labelBaseline": "middle"
+            },
+            { "orient": "left", "scale": "yscale" }
+          ],
+          "marks": [
+            {
+              "type": "rect",
+              "from": {"data":"impact_table"},
+              "encode": {
+                "enter": {
+                  "x": {"scale": "impact_xscale", "field": "name"},
+                  "width": {"scale": "impact_xscale", "band": 1},
+                  "y": {"scale": "yscale", "field": "mid"},
+                  "y2": {"scale": "yscale", "value": 0}
+                },
+                "update": {
+                  "fill": {"value": "steelblue"}
+                },
+                "hover": {
+                  "fill": {"value": "red"}
+                }
+              }
+            },
+            {
+              "type": "rect",
+              "from": {"data":"impact_table"},
+              "encode": {
+                "enter": {
+                  "x": {"scale": "impact_xscale", "field": "name", "band":0.5},
+                  "width": {"scale": "impact_xscale", "band": 0.05},
+                  "y": {"scale": "yscale", "field": "ub"},
+                  "y2": {"scale": "yscale", "field": "lb"}
+                },
+                "update": {
+                  "fill": {"value": "black"},
+                  "zindex": {"value": -5}
+                }
+              }
+            },
+            {
+              "type": "text",
+              "encode": {
+                "enter": {
+                  "align": {"value": "center"},
+                  "baseline": {"value": "bottom"},
+                  "fill": {"value": "#333"},
+                  "zindex": {"value": 5}
+                },
+                "update": {
+                  "x": {"scale": "impact_xscale", "signal": "tooltip.name", "band": 0.5},
+                  "y": {"scale": "yscale", "signal": "tooltip.ub", "offset": -2},
+                  "text": {"signal": "tooltip.label"},
+                  "fillOpacity": [
+                    {"test": "tooltip.dataseries === 'impacts'", "value": 1},
+                    {"value": 0}
+                  ]
+                }
+              }
+            }
+          ]
+      },
+      {
+          "description": "Continent",
+          "name": "continent",
+          "type": "group",
+          "encode": {
+            "enter": {
+              "x": {"scale": "layout", "value":"continent","offset":20},
+              "width": {"signal": "chartWidth"},
+              "height": {"signal": "height"},
+              "fill": {"value": "transparent"}
+            }
+          },
+          "scales": [
+            {
+              "name":"yscale",
+              "type": "linear",
+              "domain": {"data": "impact_table","field":"ub"},
+              "range": [{"signal": "height"},0]
+            },
+            {
+              "name": "xscale",
+              "type": "band",
+              "domain": {"data": "continent_table", "field": "name"},
+              "range": [0,{"signal": "chartWidth"}],
+              "padding": 0.5,
+              "round": true
+            }
+          ],
+          "axes": [
+            {
+              "orient": "bottom",
+              "scale": "xscale",
+              "labelAngle": -45,
+              "labelAlign": "right",
+              "labelBaseline": "middle"
+            },
+            { "orient": "left", "scale": "yscale" }
+          ],
+          "marks": [
+            {
+              "type": "rect",
+              "from": {"data":"continent_table"},
+              "encode": {
+                "enter": {
+                  "x": {"scale": "xscale", "field": "name"},
+                  "width": {"scale": "xscale", "band": 1},
+                  "y": {"scale": "yscale", "field": "mid"},
+                  "y2": {"scale": "yscale", "value": 0}
+                },
+                "update": {
+                  "fill": {"value": "steelblue"}
+                },
+                "hover": {
+                  "fill": {"value": "red"}
+                }
+              }
+            },
+            {
+              "type": "rect",
+              "from": {"data":"continent_table"},
+              "encode": {
+                "enter": {
+                  "x": {"scale": "xscale", "field": "name", "band":0.5},
+                  "width": {"scale": "xscale", "band": 0.05},
+                  "y": {"scale": "yscale", "field": "ub"},
+                  "y2": {"scale": "yscale", "field": "lb"}
+                },
+                "update": {
+                  "fill": {"value": "black"},
+                  "zindex": {"value": -5}
+                }
+              }
+            },
+            {
+              "type": "text",
+              "encode": {
+                "enter": {
+                  "align": {"value": "center"},
+                  "baseline": {"value": "bottom"},
+                  "fill": {"value": "#333"},
+                  "zindex": {"value": 5}
+                },
+                "update": {
+                  "x": {"scale": "xscale", "signal": "tooltip.name", "band": 0.5},
+                  "y": {"scale": "yscale", "signal": "tooltip.ub", "offset": -2},
+                  "text": {"signal": "tooltip.label"},
+                  "fillOpacity": [
+                    {"test": "tooltip.dataseries === 'continents'", "value": 1},
+                    {"value": 0}
+                  ]
+                }
+              }
+            }
+          ]
+      }
+    ]
+}
