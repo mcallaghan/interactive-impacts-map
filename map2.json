@@ -37,13 +37,28 @@
   ],
 
   "data": [
+
+    {"name":"cells",
+      "url":"data/cells.json",
+      "format": { "type": "json", "property": "features" },
+      "transform": [
+      ]
+    },
     {
       "name": "ws_data",
       "url": "data/ws_data.json",
       "format": { "type": "json", "property": "features" },
       "transform": [
-        { "type": "filter", "expr": "datum.driver===driverVar"},
-        { "type": "filter", "expr": "datum.impact===impactVar"}
+        { "type": "filter", "expr": "datum.properties.driver===driverVar"},
+        { "type": "filter", "expr": "datum.properties.impact===impactVar"},
+        {
+          "type": "lookup",
+          "from": "cells",
+          "key": "index",
+          "fields": ["index"],
+          "values": ["geometry"],
+          "as": ["geometry"]
+        }
       ]
     },
     {
@@ -110,7 +125,7 @@
             "tooltip": {"signal": "datum.properties"}
           },
           "update": {
-            "fill": {"scale": "Weighted studies", "field": "weight"},
+            "fill": {"scale": "Weighted studies", "field": "properties.weight"},
             "stroke": {"value": "lightgrey"}
           },
           "hover": { "stroke": {"value": "red"} }

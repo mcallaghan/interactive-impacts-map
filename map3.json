@@ -1,0 +1,123 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A plot of 2016 annual global precipitation data from the NOAA Climate Forecast System (CFS) v2.",
+  "width": 600,
+  "height": 300,
+  "autosize": "fit-x",
+
+
+  "signals": [
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout",  "update": "{}"}
+      ]
+    },
+    {
+      "name": "driverVar",
+      "bind": {"element": "#fig2_driver"}
+    },
+    {
+      "name": "impactVar",
+      "bind": {"element": "#fig2_impact"}
+    }
+  ],
+
+  "data": [
+
+    {"name":"cells",
+      "url":"data/cells.json",
+      "format": { "type": "json", "property": "features" },
+      "transform": [
+      ]
+    },
+    {
+      "name": "ws_data",
+      "url": "data/ws_da_data.json",
+      "format": { "type": "json", "property": "features" },
+      "transform": [
+        { "type": "filter", "expr": "datum.properties.driver===driverVar"},
+        { "type": "filter", "expr": "datum.properties.impact===impactVar"},
+        {
+          "type": "lookup",
+          "from": "cells",
+          "key": "index",
+          "fields": ["index"],
+          "values": ["geometry"],
+          "as": ["geometry"]
+        }
+      ]
+    },
+    {
+      "name": "world",
+      "url": "data/world-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    }
+  ],
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "equalEarth",
+      "scale": 110,
+      "rotate": [0,0,0],
+      "translate": {"signal": "[width/2, height/2]"}
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "da_cat",
+      "type": "ordinal",
+      "domain": [1,2,3,4,5,6],
+      "range": [
+        "#fbb4b9","#f768a1","#ae017e",
+        "#cccccc","#969696","#525252"
+      ]
+    }
+  ],
+
+
+
+        "marks": [
+          {
+            "type": "shape",
+            "clip": true,
+            "from": {"data": "world"},
+            "encode": {
+              "update": {
+                "strokeWidth": {"value": 1},
+                "stroke": {"value": "black"}
+              }
+            },
+            "transform": [
+              {
+                "type": "geoshape",
+                "projection": "projection"
+              }
+            ]
+          },
+          {
+            "type": "shape",
+            "from": {"data": "ws_data"},
+            "encode": {
+              "enter": {
+                "strokeWidth": {"value": 0.5},
+                "opacity": {"value": 0.5},
+                "tooltip": {"signal": "datum.properties"}
+              },
+              "update": {
+                "fill": {"scale": "da_cat", "field": "properties.evidence_cat"},
+                "stroke": {"value": "lightgrey"}
+              },
+              "hover": { "stroke": {"value": "red"} }
+            },
+            "transform": [
+              { "type": "geoshape", "projection": "projection" }
+            ]
+          }
+        ]
+
+}
