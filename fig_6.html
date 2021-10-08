@@ -10,10 +10,10 @@
 
 </head>
 <body class="root">
-  <div class="container">
+  <div class="container" >
     <div class="row">
-      <div class="container">
-        <div id="view3"></div>
+      <div class="container" style="max-width:600">
+        <div id="view3" class="container-sm"></div>
       </div>
     </div>
     <div class="row">
@@ -42,8 +42,9 @@
     </form>
     </div>
     <div class="row">
-        <div id="fig2_bar">
-        </div>
+      <div class="container" style="max-width:600">
+        <div id="fig2_bar" class="container-sm"></div>
+      </div>
 
     </div>
     <div class="row">
@@ -53,7 +54,7 @@
           </select></label>
         </div>
       </form>
-    <div class="center"><img src="static/fig2_key.png" width="400px"></div>
+    <div class="center"><img src="static/fig2_key.png" width="300px"></div>
   </div>
 </body>
 
@@ -67,10 +68,11 @@
     }
     await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
       view = result.view
+      window.dispatchEvent(new Event('resize'));
     });
   }
-  addVgExample("map3.json", "#view3");
-
   addVgExample("fig2_bars.json", "#fig2_bar");
+
+  addVgExample("map3.json", "#view3");
 
 </script>

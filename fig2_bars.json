@@ -19,6 +19,19 @@
       "bind": {"element": "#bar_variable"}
     },
     {
+      "name": "con_width",
+      "value": 600,
+      "on": [
+        {
+          "events": {
+            "source": "window",
+            "type": "resize"
+          },
+          "update": "containerSize()[0]-50"
+        }
+      ]
+    },
+    {
       "name": "tooltip",
       "value": {},
       "on": [
@@ -88,7 +101,7 @@
     {
       "name": "x",
       "type": "band",
-      "range": "width",
+      "range": [0,{"signal":"con_width"}],
       "domain": {"data": "ws_data_group", "field": "Income category"}
     },
     {
@@ -103,7 +116,7 @@
   ],
 
   "axes": [
-    {"orient": "bottom", "scale": "x", "zindex": 1},
+    {"orient": "bottom", "scale": "x", "zindex": 1, "labelAngle":-30, "labelAlign":"right"},
     {"orient": "left", "scale": "y", "zindex": 1}
   ],
 
@@ -113,8 +126,6 @@
       "from": {"data": "ws_data_group"},
       "encode": {
         "enter": {
-          "x": {"scale": "x", "field": "Income category"},
-          "width": {"scale": "x", "band": 1, "offset": -1},
           "y": {"scale": "y", "field": "y0"},
           "y2": {"scale": "y", "field": "y1"},
           "fill": {"scale": "color", "field": "evidence_cat"},

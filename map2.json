@@ -23,6 +23,32 @@
       ]}
     },
     {
+      "name": "con_width",
+      "value": 600,
+      "on": [
+        {
+          "events": {
+            "source": "window",
+            "type": "resize"
+          },
+          "update": "containerSize()[0]"
+        }
+      ]
+    },
+    {
+      "name": "height",
+      "value": "",
+      "on": [
+        {
+          "events": {
+            "source": "window",
+            "type": "resize"
+          },
+          "update": "containerSize()[0]/2"
+        }
+      ]
+    },
+    {
       "name": "impactVar", "value": "all",
       "bind": {"input": "select", "name": "Impact: ", "options": [
         "all",
@@ -72,9 +98,9 @@
     {
       "name": "projection",
       "type": "equalEarth",
-      "scale": 110,
+      "scale": {"signal": "con_width*0.95/6"},
       "rotate": [0,0,0],
-      "translate": {"signal": "[width/2, height/2]"}
+      "translate": {"signal": "[con_width/2, con_width/4]"}
     }
   ],
 

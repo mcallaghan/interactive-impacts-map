@@ -10,8 +10,10 @@
 
 </head>
 <body class="root">
-  <div id="view2"></div>
-  <div class="center"><img src="static/wskey.png" width="400px"></div>
+  <div class="row" style="max-width:600">
+    <div id="view2" class="container-sm"></div>
+    <div class="center"><img src="static/wskey.png" width="300px"></div>
+  </div>
 </body>
 
 <script>
@@ -24,6 +26,7 @@
     }
     await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
       view = result.view
+      window.dispatchEvent(new Event('resize'));
     });
   }
   addVgExample("map2.json", "#view2");

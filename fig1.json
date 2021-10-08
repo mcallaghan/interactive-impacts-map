@@ -13,7 +13,7 @@
       "on": [
         {
           "events": "mousemove",
-          "update": "round(invert('x', clamp(x(), 0, width)))"
+          "update": "round(invert('x', clamp(x(), 0, con_width)))"
         }
       ]
     },
@@ -23,10 +23,23 @@
       "on": [
         {
           "events": "mousemove",
-          "update": "round(invert('x', clamp(x(), 0, width))) > 2005 ? 'right' : 'left'"
+          "update": "round(invert('x', clamp(x(), 0, con_width))) > 2005 ? 'right' : 'left'"
         }
       ]
     },
+    {
+          "name": "con_width",
+          "value": 600,
+          "on": [
+            {
+              "events": {
+                "source": "window",
+                "type": "resize"
+              },
+              "update": "containerSize()[0]-100"
+            }
+          ]
+        },
     {
       "name": "maxDate",
       "update": "2019"
@@ -57,7 +70,7 @@
     {
       "name": "x",
       "type": "linear",
-      "range": "width",
+      "range": [0,{"signal":"con_width"}],
       "zero": false,
       "domain": {"data": "table", "field": "PY"}
     },
@@ -87,13 +100,13 @@
         "from": {"data": "table"},
         "encode": {
           "enter": {
-            "x": {"scale": "x", "field": "PY"},
-            "y": {"scale": "y", "field": "mid"},
             "stroke": {"value": "steelblue"},
             "strokeWidth": {"value": 1}
           },
           "update": {
-            "strokeOpacity": {"value": 1}
+            "strokeOpacity": {"value": 1},
+            "x": {"scale": "x", "field": "PY"},
+            "y": {"scale": "y", "field": "mid"}
           },
           "hover": {
             "strokeOpacity": {"value": 0.5}
@@ -105,14 +118,16 @@
         "from": {"data": "table"},
         "encode": {
           "enter": {
-            "x": {"scale": "x", "field": "PY"},
-            "x2": {"scale": "x", "field": "PY"},
             "y": {"scale": "y", "field": "ub"},
             "y2": {"scale": "y", "field": "lb"},
             "stroke": {"value": "steelblue"},
             "fill": {"value": "steelblue"},
             "opacity": {"value": 0.5},
             "strokeWidth": {"value": 1}
+          },
+          "update": {
+            "x": {"scale": "x", "field": "PY"},
+            "x2": {"scale": "x", "field": "PY"}
           }
         }
       },
