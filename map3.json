@@ -3,7 +3,6 @@
   "description": "A plot of 2016 annual global precipitation data from the NOAA Climate Forecast System (CFS) v2.",
   "width": 600,
   "height": 300,
-  "autosize": "fit-x",
 
 
   "signals": [

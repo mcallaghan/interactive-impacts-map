@@ -18,7 +18,8 @@
     const vgSpec = await d3.json(path);
     const handler = new vegaTooltip.Handler(options);
     var opt = {
-      tooltip: handler.call
+      tooltip: handler.call,
+      actions: false
     }
     await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
       view = result.view
