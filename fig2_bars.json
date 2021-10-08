@@ -17,6 +17,14 @@
     {
       "name": "variable", "value": "population",
       "bind": {"element": "#bar_variable"}
+    },
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout",  "update": "{}"}
+      ]
     }
   ],
 
@@ -109,7 +117,8 @@
           "width": {"scale": "x", "band": 1, "offset": -1},
           "y": {"scale": "y", "field": "y0"},
           "y2": {"scale": "y", "field": "y1"},
-          "fill": {"scale": "color", "field": "evidence_cat"}
+          "fill": {"scale": "color", "field": "evidence_cat"},
+          "tooltip": {"signal": "{'Population': format(datum.population,'0.1%'),'Area': format(datum.area, '0.1%')}"}
         },
         "update": {
           "fillOpacity": {"value": 1},

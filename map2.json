@@ -122,7 +122,7 @@
           "enter": {
             "strokeWidth": {"value": 0.5},
             "opacity": {"value": 0.5},
-            "tooltip": {"signal": "datum.properties"}
+            "tooltip": {"signal": "{'Latitude': datum.properties.LAT, 'Longitude': datum.properties.LON, 'Weighted studies': datum.properties.weight}"}
           },
           "update": {
             "fill": {"scale": "Weighted studies", "field": "properties.weight"},
