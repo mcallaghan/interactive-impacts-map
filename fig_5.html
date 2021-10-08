@@ -1,0 +1,30 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-tooltip"></script>
+
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+</head>
+<body class="root">
+  <div id="view2"></div>
+  <div class="center"><img src="static/wskey.png" width="400px"></div>
+</body>
+
+<script>
+  async function addVgExample(path, id, options) {
+    const vgSpec = await d3.json(path);
+    const handler = new vegaTooltip.Handler(options);
+    var opt = {
+      tooltip: handler.call
+    }
+    await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
+      view = result.view
+    });
+  }
+  addVgExample("map2.json", "#view2");
+
+</script>

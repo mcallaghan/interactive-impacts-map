@@ -1,0 +1,74 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-tooltip"></script>
+
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+</head>
+<body class="root">
+  <div class="container">
+    <div class="row">
+        <div id="view3"></div>
+    </div>
+    <div class="row">
+      <form class="vega-bindings">
+        <div class="vega-bind">
+          <label><span class="vega-bind-name">Driver: </span>
+            <select id="fig2_driver" name="driverVar">
+              <option value="all">all</option>
+              <option value="Temperature" selected="true">Temperature</option>
+              <option value="Precipitation">Precipitation</option>
+            </select>
+          </label>
+        </div>
+        <div class="vega-bind">
+          <label><span class="vega-bind-name">Impact: </span><select id="fig2_impact" name="impactVar">
+            <option value="all" selected="true">all</option>
+            <option value="Coastal and marine Ecosystems">Coastal and marine Ecosystems</option>
+            <option value="Human and managed">Human and managed</option>
+            <option value="Mountains, snow and ice">Mountains, snow and ice</option>
+            <option value="Rivers, lakes, and soil moisture">Rivers, lakes, and soil moisture</option>
+            <option value="Terrestrial ES">Terrestrial ES</option>
+            <option value="Other systems">Other systems</option>
+          </select>
+        </label>
+      </div>
+    </form>
+    </div>
+    <div class="row">
+        <div id="fig2_bar">
+          Bla
+        </div>
+
+    </div>
+    <div class="row">
+      <form class="vega-bindings">
+        <div class="vega-bind"><label><span class="vega-bind-name">Variable: </span>
+          <select id="bar_variable" name="variable"><option value="population" selected="true">Population</option><option value="area">Area</option>
+          </select></label>
+        </div>
+      </form>
+    <div class="center"><img src="static/fig2_key.png" width="400px"></div>
+  </div>
+</body>
+
+<script>
+  async function addVgExample(path, id, options) {
+    const vgSpec = await d3.json(path);
+    const handler = new vegaTooltip.Handler(options);
+    var opt = {
+      tooltip: handler.call
+    }
+    await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
+      view = result.view
+    });
+  }
+  addVgExample("map3.json", "#view3");
+
+  addVgExample("fig2_bars.json", "#fig2_bar");
+
+</script>
