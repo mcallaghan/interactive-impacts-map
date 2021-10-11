@@ -16,7 +16,7 @@ attribution mapping of 100,000 climate
 impact studies</h2>
 
   <p> This text and the accompanying graphs are based on the analysis performed for the paper published as Callaghan, M. et al. (2021) Machine-learning-based evidence and attribution mapping of 100,000 climate impact studies, Nature Climate Change, <a href="https://www.nature.com/articles/s41558-021-01168-6" rel="nofollow">doi:10.1038/s41558-021-01168-6</a>
-
+    <section id="body-of-evidence">
     <h3>1. A growing body of evidence on climate impacts</h3>
     <p> We use machine learning to identify over 100,000 individual studies of
       observed climate impacts, and classify the type of impact they document, and the
@@ -26,12 +26,14 @@ impact studies</h2>
       <div class="row" style="max-width:770px">
         <div id="fig1" class="container-fluid"></div>
       </div>
+    <section id="classification-mapping">
     <h3>2. Automatic classification and mapping of evidence</h3>
     <p> Assessing evidence at this kind of scale manually is unfeasible, but mapping this out is critical to
       assessments like the the IPCC which try to provide a comprehensive picture of climate research.
       We use machine learning to predict what type of system climate impacts are occuring in, whether those
       impacts are being driven by temperature or precipitation, and where the study documents evidence from.
     <div id="fig1_2"></div>
+    <section id="grid-cell-attribution">
     <h3>3. Grid cell level attribution of temperature and precipitation trends</h3>
     <p> The studies we include describe impacts that may not be formally attributed to human influence on the climate.
       Many studies look at the effects of rising temperatures on an outcome like heat related mortality, for example,
@@ -57,6 +59,7 @@ impact studies</h2>
       from natural variability, and sometimes this is because climate models predict a trend in the
       opposite direction (categories +4 and -4).
 
+    <section id="study-gridpoint">
     <h3>4. Mapping individual studies to grid points</h3>
     <p> Next we map the studies we identified to the same grid cells by resolving the locations we identified
       to the set of cells that overlap the location. The example below shows how the the grid cells attribution
@@ -64,6 +67,7 @@ impact studies</h2>
       the studies that talk about Sudan and the geographical locations within Sudan
       are mapped to grid cells with a Weighted Studies (WS) score.
     <div class="center"><img src="static/EF9.jpg" width="600px"></div>
+    <section id="mapping-research">
     <h3>5. Mapping climate impact research by impact type</h3>
     <p> By plotting this weighted studies score in each grid cell, we can show where evidence on climate impacts
       is the densest, and see how this changes when we look at different types of impacts, and different drivers.
@@ -71,6 +75,7 @@ impact studies</h2>
       Europe.
     <div id="view2"></div>
     <div class="center"><img src="static/wskey.png" width="400px"></div>
+    <section id="synthetic-map">
     <h3> 6. Mapping potentially attributable impacts literature through preliminary two-step attribution</h3>
     <p> If we overlay the two maps we have already seen, we can bring together the two lines of evidence and show
       <ul>
