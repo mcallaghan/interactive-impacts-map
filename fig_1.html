@@ -10,8 +10,8 @@
 
 </head>
 <body class="root">
-  <div class="row" style="max-width:600">
-    <div id="fig1" class="container-sm"></div>
+  <div class="row" style="max-width:770px">
+    <div id="fig1" class="container-fluid"></div>
   </div>
 </body>
 
@@ -25,6 +25,7 @@
     }
     await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
       view = result.view
+      window.dispatchEvent(new Event('resize'));
     });
   }
   addVgExample("fig1.json", "#fig1");

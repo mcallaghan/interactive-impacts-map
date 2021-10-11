@@ -23,7 +23,7 @@
       ]}
     },
     {
-      "name": "con_width",
+      "name": "width",
       "value": 600,
       "on": [
         {
@@ -98,9 +98,9 @@
     {
       "name": "projection",
       "type": "equalEarth",
-      "scale": {"signal": "con_width*0.95/6"},
+      "scale": {"signal": "width*0.95/6"},
       "rotate": [0,0,0],
-      "translate": {"signal": "[con_width/2, con_width/4]"}
+      "translate": {"signal": "[width/2, width/4]"}
     }
   ],
 
