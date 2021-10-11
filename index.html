@@ -129,6 +129,7 @@ impact studies</h2>
       }
       await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
         view = result.view
+        window.dispatchEvent(new Event('resize'));
       });
     }
     addVgExample("fig1.json", "#fig1");
