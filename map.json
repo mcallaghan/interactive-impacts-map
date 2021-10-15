@@ -15,10 +15,20 @@
       ]
     },
     {
-      "name": "variable", "value": "Temperature",
+      "name": "var_type", "value": "obs",
+      "bind": {"input": "select", "name": "Variable type: ", "options": [
+        "obs","af","da_cat"
+      ], "labels": ["Observations","Modelled","Attribution category"]}
+    },
+    {
+      "name": "variable", "value": "temp",
       "bind": {"input": "select", "name": "Variable: ", "options": [
-        "Temperature", "Precipitation"
+        "temp", "precip"
       ]}
+    },
+    {
+      "name": "comp_var", "value": "obs_temp",
+      "update": "join([var_type,lower(variable)],'_')"
     }
   ],
 
@@ -47,10 +57,12 @@
 
   "scales": [
     {
-      "name": "Temperature",
+      "name": "da_cat_temp",
       "type": "ordinal",
-      "domain": [-4,-3,-2,-1,0,1,2,3,4,5],
-      "range": ["#40004b",
+      "domain": [-99,-4,-3,-2,-1,0,1,2,3,4],
+      "range": [
+        "grey",
+        "#40004b",
          "#2166ac",
          "#67a9cf",
          "#d1e5f0",
@@ -58,12 +70,93 @@
          "#fddbc7",
          "#ef8a62",
          "#b2182b",
-         "#ffed6f",
-         "#e0e0e0"
+         "#ffed6f"
       ]
     },
     {
-      "name": "Precipitation",
+      "name": "obs_temp",
+      "type": "threshold",
+      "domain": [-8,-4,-2,-1.5,-1,-0.5,-0.25,0,0.25,0.5,1,1.5,2,4,8],
+      "range": ["grey",
+          "#053061",
+         "#1b5a9b",
+         "#337eb8",
+         "#5ba2cb",
+         "#97c7df",
+         "#c7e0ed",
+         "#e8f0f4",
+         "#f9ece5",
+         "#fcd3bc",
+         "#f5a987",
+         "#df755d",
+         "#c53f3d",
+         "#a11228",
+         "#67001f",
+         "#67001f"]
+    },
+    {
+      "name": "af_temp",
+      "type": "threshold",
+      "domain": [-8,-4,-2,-1.5,-1,-0.5,-0.25,0,0.25,0.5,1,1.5,2,4,8],
+      "range": ["grey",
+          "#053061",
+         "#1b5a9b",
+         "#337eb8",
+         "#5ba2cb",
+         "#97c7df",
+         "#c7e0ed",
+         "#e8f0f4",
+         "#f9ece5",
+         "#fcd3bc",
+         "#f5a987",
+         "#df755d",
+         "#c53f3d",
+         "#a11228",
+         "#67001f",
+         "#67001f"]
+    },
+    {
+      "name": "obs_precip",
+      "type": "threshold",
+      "domain": [-8,-4,-2,-1.5,-1,-0.5,-0.25,0,0.25,0.5,1,1.5,2,4,8],
+      "range": ["grey","#543005",
+ "#7f4909",
+ "#a76b1d",
+ "#c99546",
+ "#e1c582",
+ "#f2e2b8",
+ "#f5f0e2",
+ "#e3f1ef",
+ "#bce6df",
+ "#85cfc4",
+ "#4ca89e",
+ "#1d8078",
+ "#015c53",
+ "#003c30",
+ "#003c30"]
+    },
+    {
+      "name": "af_precip",
+      "type": "threshold",
+      "domain": [-8,-4,-2,-1.5,-1,-0.5,-0.25,0,0.25,0.5,1,1.5,2,4,8],
+      "range": ["grey","#543005",
+ "#7f4909",
+ "#a76b1d",
+ "#c99546",
+ "#e1c582",
+ "#f2e2b8",
+ "#f5f0e2",
+ "#e3f1ef",
+ "#bce6df",
+ "#85cfc4",
+ "#4ca89e",
+ "#1d8078",
+ "#015c53",
+ "#003c30",
+ "#003c30"]
+    },
+    {
+      "name": "da_cat_precip",
       "type": "ordinal",
       "domain": [-4,-3,-2,-1,0,1,2,3,4,5],
       "range": [
@@ -123,10 +216,10 @@
         "enter": {
           "strokeWidth": {"value": 0.5},
           "opacity": {"value": 0.5},
-          "tooltip": {"signal": "{'Latitude': datum.properties.LAT, 'Longitude': datum.properties.LON, 'Precipitation attribution category': datum.properties.updated_precip,'Temperature attribution category': datum.properties.updated_temp}"}
+          "tooltip": {"signal": "{'Latitude': datum.properties.LAT, 'Longitude': datum.properties.LON, 'Observed temperature trend (1951-2018)': format(datum.properties.obs_temp,'.2f'), 'Modelled temperature trend (1951-2018)': format(datum.properties.af_temp,'.2f'), 'Temperature attribution category': datum.properties.da_cat_temp, 'Observed precipitation trend (1951-2016)': format(datum.properties.obs_precip,'.2f'), 'Modelled precipitation trend (1951-2016)': datum.properties.af_precip, 'Precipitation attribution category': datum.properties.da_cat_precip}"}
         },
         "update": {
-          "fill": {"scale": {"signal": "variable"}, "field": {"signal": "variable"}},
+          "fill": {"scale": {"signal": "comp_var"}, "field": {"signal": "comp_var"}},
           "stroke": {"value": "lightgrey"}
         },
         "hover": { "stroke": {"value": "red"} }

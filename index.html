@@ -4,7 +4,10 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-tooltip"></script>
-
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="style.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 
@@ -45,12 +48,14 @@ impact studies</h2>
       We used updated observational data and recent climate models to generate a picture of where trends in temperature and precipitation since 1951 can be
       attributed to human influence on the climate.
       Where trends are significantly different from internal variability, and in line those expected from climate models, we call them
-      detectable and attributable trends (categories +-2/3 below)?
+      detectable and attributable trends (attribution categories +-2/3 below)?
     <!-- <p class="todo">Switch between observational data, modelling, internal variability and Impact category
     <p class="todo"> Explain how we make these calculations
     <p class="todo"> Refine Tooltip -->
     <div id="view"></div>
-    <div class="center"><img src="static/dakey.png" width="400px"></div>
+    <div class="center"><img id="temp_key" src="static/temp_key.png" width="400px">
+      <img class="hidden" id="precip_key" src="static/precip_key.png" width="400px">
+      <img class="hidden" id="dakey" src="static/dakey.png" width="400px"></div>
     <p>Temperatures have been rising all over the world, and for the majority of land area, these can
       be attributed to human influence on the climate.
 
@@ -130,6 +135,37 @@ impact studies</h2>
     <!-- <div class="center"><img src="static/figure_2.png" width="600px"></div> -->
   </div>
   <script>
+    async function addVgExampleListen(path, id, options) {
+      const vgSpec = await d3.json(path);
+      const handler = new vegaTooltip.Handler(options);
+      var opt = {
+        tooltip: handler.call
+      }
+      await vegaEmbed(id, vgSpec, opt).catch(console.error).then(function(result){
+        view = result.view
+        window.dispatchEvent(new Event('resize'));
+        view.addSignalListener('comp_var', (name,value) => {
+          if (value.includes("da_cat")) {
+            $("#dakey").removeClass("hidden")
+            $("#temp_key").addClass("hidden")
+            $("#precip_key").addClass("hidden")
+          } else {
+            $("#dakey").addClass("hidden")
+            if (value.includes("temp")) {
+              $("#temp_key").removeClass("hidden")
+              $("#precip_key").addClass("hidden")
+            } else {
+              $("#temp_key").addClass("hidden")
+              $("#precip_key").removeClass("hidden")
+            }
+          }
+        })
+      });
+    }
+
+    addVgExampleListen("map.json", "#view");
+
+
     async function addVgExample(path, id, options) {
       const vgSpec = await d3.json(path);
       const handler = new vegaTooltip.Handler(options);
@@ -141,11 +177,10 @@ impact studies</h2>
         window.dispatchEvent(new Event('resize'));
       });
     }
+
     addVgExample("fig1.json", "#fig1");
 
     addVgExample("fig1_2.json", "#fig1_2");
-
-    addVgExample("map.json", "#view");
 
     addVgExample("map2.json", "#view2");
 

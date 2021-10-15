@@ -26,3 +26,7 @@ div.center {
 p.todo {
   background-color: yellow;
 }
+
+.hidden {
+  display: none;
+}
