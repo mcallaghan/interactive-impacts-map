@@ -24,7 +24,7 @@
       "name": "variable", "value": "temp",
       "bind": {"input": "select", "name": "Variable: ", "options": [
         "temp", "precip"
-      ]}
+      ], "labels": ["Temperature","Precipitation"]}
     },
     {
       "name": "comp_var", "value": "obs_temp",
